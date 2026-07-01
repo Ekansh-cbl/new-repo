@@ -19,38 +19,66 @@
       <div class="rounded-md border border-white/10 bg-neutral/80 p-3 text-xs text-secondary">Keep the face centered. Capture with neutral background when possible.</div>
       <div class="overflow-hidden rounded-lg border border-white/10 bg-surface">
         <video id="cameraPreview" class="h-48 w-full object-cover bg-black" autoplay playsinline muted></video>
-        <div class="border-t border-white/10 p-3 text-xs text-secondary">
+        <canvas id="captureCanvas" class="hidden"></canvas>
+        <div class="border-t border-white/10 p-3 text-xs text-secondary space-y-3">
           <div class="flex items-center justify-between gap-2">
             <span id="cameraStatus">Camera idle</span>
             <button id="startCameraBtn" type="button" class="btn-secondary px-3 py-1 text-xs">Start Camera</button>
           </div>
-          <p class="mt-2">This uses your browser camera permission. If blocked, allow camera access and try again.</p>
+          <div class="flex items-center justify-between gap-2">
+            <button id="captureFrameBtn" type="button" class="btn-primary px-3 py-1 text-xs" disabled>Capture Frame</button>
+            <span id="frameCount" class="font-mono text-xs">Frames captured: 0</span>
+          </div>
+          <p id="cameraHelp" class="text-secondary">This uses your browser camera permission. If blocked, allow camera access and try again.</p>
         </div>
       </div>
       <div class="h-24 rounded-lg border border-white/10 bg-surface p-3 text-xs text-secondary">
         Capture session state: <span class="text-primary">{{ 'active' if store.capture_session_active else 'idle' }}</span>
       </div>
+      <div id="frameStatus" class="rounded-md border border-white/10 bg-neutral/80 p-3 text-xs text-secondary">No frame captured yet.</div>
     </div>
   </div>
 </section>
 <section class="panel p-6 mt-6"><h2 class="text-lg font-semibold">Validation Checklist</h2><div class="mt-4 grid gap-4 md:grid-cols-3 text-sm text-secondary"><div class="check-card">All 5 images captured</div><div class="check-card">No duplicate face angles</div><div class="check-card">Lighting consistency</div></div></section>
 <script>
-(async () => {
+(() => {
   const btn = document.getElementById('startCameraBtn');
+  const captureBtn = document.getElementById('captureFrameBtn');
   const video = document.getElementById('cameraPreview');
+  const canvas = document.getElementById('captureCanvas');
   const status = document.getElementById('cameraStatus');
-  if (!btn || !video || !status) return;
+  const help = document.getElementById('cameraHelp');
+  const frameStatus = document.getElementById('frameStatus');
+  const frameCount = document.getElementById('frameCount');
+  if (!btn || !captureBtn || !video || !canvas || !status || !help || !frameStatus || !frameCount) return;
+
   let stream = null;
+  let frames = 0;
+
   async function startCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      status.textContent = 'Camera unsupported';
+      help.textContent = 'Your browser does not support camera access.';
+      return;
+    }
+
     try {
+      status.textContent = 'Requesting camera permission...';
       stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       video.srcObject = stream;
+      await video.play();
       status.textContent = 'Camera running';
+      help.textContent = 'Camera active. Use Capture Frame to take snapshots.';
       btn.textContent = 'Stop Camera';
+      captureBtn.disabled = false;
     } catch (error) {
+      console.error('Camera error', error);
       status.textContent = 'Camera access blocked';
+      help.textContent = error && error.message ? error.message : 'Unable to access the camera.';
+      captureBtn.disabled = true;
     }
   }
+
   function stopCamera() {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
@@ -58,11 +86,30 @@
     }
     video.srcObject = null;
     status.textContent = 'Camera idle';
+    help.textContent = 'Camera stopped.';
     btn.textContent = 'Start Camera';
+    captureBtn.disabled = true;
   }
+
+  function captureFrame() {
+    if (!stream) {
+      frameStatus.textContent = 'Start the camera before capturing frames.';
+      return;
+    }
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    frames += 1;
+    frameCount.textContent = `Frames captured: ${frames}`;
+    frameStatus.textContent = `Captured frame ${frames} at ${new Date().toLocaleTimeString()}.`;
+  }
+
   btn.addEventListener('click', () => {
     if (stream) stopCamera(); else startCamera();
   });
+  captureBtn.addEventListener('click', captureFrame);
+  captureBtn.disabled = true;
 })();
 </script>
 {% endblock %}

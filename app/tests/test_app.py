@@ -18,6 +18,8 @@ def test_register_page_loads_and_posts():
     assert response.status_code == 200
     assert "Capture Progress" in response.text
     assert "Start Camera" in response.text
+    assert "Capture Frame" in response.text
+    assert "captureCanvas" in response.text
 
     shot = client.post("/capture", follow_redirects=True)
     assert shot.status_code == 200
