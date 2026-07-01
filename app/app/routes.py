@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 router = APIRouter()
 
@@ -37,6 +37,13 @@ def submit_registration(
         submitted_camera=camera,
         submitted_notes=notes,
     )
+
+
+@router.post("/capture")
+def capture_shot(request: Request):
+    store = request.app.state.store
+    store.capture_progress = min(store.capture_target, store.capture_progress + 1)
+    return RedirectResponse(url="/register", status_code=303)
 
 
 @router.get("/people", response_class=HTMLResponse)

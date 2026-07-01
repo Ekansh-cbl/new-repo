@@ -18,7 +18,14 @@ def test_register_page_loads_and_posts():
     assert response.status_code == 200
     assert "Capture Progress" in response.text
 
-    posted = client.post("/register", data={"full_name": "Test User", "notes": "Blue jacket", "camera": "Inbuilt Camera"})
+    shot = client.post("/capture", follow_redirects=True)
+    assert shot.status_code == 200
+    assert "Capture Progress" in shot.text
+
+    posted = client.post(
+        "/register",
+        data={"full_name": "Test User", "notes": "Blue jacket", "camera": "Inbuilt Camera"},
+    )
     assert posted.status_code == 200
     assert "Saved Test User" in posted.text
 
