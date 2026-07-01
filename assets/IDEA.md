@@ -1,1 +1,1 @@
-I want to build a to-do application that can work offline
+Dashboard that will open camera to register a user and capture 5 images of that person then that images will be used to train a person detection model to detect, registered person amoung different peoople in room. it should cuse 2 cameras 1 inbuilt laptop camera and other is attached webcam to capture live feed and give detections live. We can use yolo for detections fnetuning and tech stack of python. we should assign random ids to unregistered detected people and persisit it accorss all the input camera feeds.
