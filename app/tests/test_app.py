@@ -17,6 +17,7 @@ def test_register_page_loads_and_posts():
     response = client.get("/register")
     assert response.status_code == 200
     assert "Capture Progress" in response.text
+    assert "Start Camera" in response.text
 
     shot = client.post("/capture", follow_redirects=True)
     assert shot.status_code == 200

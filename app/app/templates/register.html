@@ -13,8 +13,56 @@
       <div class="grid gap-4 md:grid-cols-2"><div><label class="form-label">Camera</label><select name="camera" class="form-input"><option>Inbuilt Camera</option><option>External Webcam</option></select></div><div><label class="form-label">Lighting</label><select name="lighting" class="form-input"><option>Neutral</option><option>Low light</option><option>Bright</option></select></div></div>
       <div class="flex items-center gap-3"><button type="submit" formaction="/capture" formmethod="post" class="btn-primary">Capture Shot</button><button type="submit" class="btn-secondary">Save Registration</button></div>
     </form>
-    <div class="panel-soft p-4"><div class="flex items-center justify-between"><p class="panel-title">Capture Progress</p><span class="font-mono text-xs text-secondary">{{ store.capture_progress }} of {{ store.capture_target }}</span></div><div class="mt-4 grid grid-cols-5 gap-2">{% for i in range(1,6) %}<div class="thumb {% if i <= store.capture_progress %}thumb-done{% endif %}"></div>{% endfor %}</div><div class="mt-4 rounded-md border border-white/10 bg-neutral/80 p-3 text-xs text-secondary">Keep the face centered. Capture with neutral background when possible.</div><div class="mt-4 h-40 rounded-lg border border-white/10 bg-surface"></div></div>
+    <div class="panel-soft p-4 space-y-4">
+      <div class="flex items-center justify-between"><p class="panel-title">Capture Progress</p><span class="font-mono text-xs text-secondary">{{ store.capture_progress }} of {{ store.capture_target }}</span></div>
+      <div class="grid grid-cols-5 gap-2">{% for i in range(1,6) %}<div class="thumb {% if i <= store.capture_progress %}thumb-done{% endif %}"></div>{% endfor %}</div>
+      <div class="rounded-md border border-white/10 bg-neutral/80 p-3 text-xs text-secondary">Keep the face centered. Capture with neutral background when possible.</div>
+      <div class="overflow-hidden rounded-lg border border-white/10 bg-surface">
+        <video id="cameraPreview" class="h-48 w-full object-cover bg-black" autoplay playsinline muted></video>
+        <div class="border-t border-white/10 p-3 text-xs text-secondary">
+          <div class="flex items-center justify-between gap-2">
+            <span id="cameraStatus">Camera idle</span>
+            <button id="startCameraBtn" type="button" class="btn-secondary px-3 py-1 text-xs">Start Camera</button>
+          </div>
+          <p class="mt-2">This uses your browser camera permission. If blocked, allow camera access and try again.</p>
+        </div>
+      </div>
+      <div class="h-24 rounded-lg border border-white/10 bg-surface p-3 text-xs text-secondary">
+        Capture session state: <span class="text-primary">{{ 'active' if store.capture_session_active else 'idle' }}</span>
+      </div>
+    </div>
   </div>
 </section>
 <section class="panel p-6 mt-6"><h2 class="text-lg font-semibold">Validation Checklist</h2><div class="mt-4 grid gap-4 md:grid-cols-3 text-sm text-secondary"><div class="check-card">All 5 images captured</div><div class="check-card">No duplicate face angles</div><div class="check-card">Lighting consistency</div></div></section>
+<script>
+(async () => {
+  const btn = document.getElementById('startCameraBtn');
+  const video = document.getElementById('cameraPreview');
+  const status = document.getElementById('cameraStatus');
+  if (!btn || !video || !status) return;
+  let stream = null;
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      video.srcObject = stream;
+      status.textContent = 'Camera running';
+      btn.textContent = 'Stop Camera';
+    } catch (error) {
+      status.textContent = 'Camera access blocked';
+    }
+  }
+  function stopCamera() {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      stream = null;
+    }
+    video.srcObject = null;
+    status.textContent = 'Camera idle';
+    btn.textContent = 'Start Camera';
+  }
+  btn.addEventListener('click', () => {
+    if (stream) stopCamera(); else startCamera();
+  });
+})();
+</script>
 {% endblock %}
