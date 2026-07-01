@@ -1,21 +1,19 @@
 # DualCam Ops
 
-Python FastAPI dashboard for dual-camera person detection, registration, anonymous ID persistence, and model training control.
-
-## Run
+Run the app from this directory:
 
 ```bash
 pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-Preview fallback:
+Or use the helper script:
 
 ```bash
-python3 preview.py
+bash launch.sh
 ```
 
-## Test
+Run tests:
 
 ```bash
 pytest
