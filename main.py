@@ -1,1 +1,3 @@
-from app.main import app
+from core import create_app
+
+app = create_app()
