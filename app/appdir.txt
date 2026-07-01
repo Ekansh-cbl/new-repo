@@ -1,0 +1,1 @@
+This repository is intentionally rooted under /workspace/app, while the preview tooling expects /app.
