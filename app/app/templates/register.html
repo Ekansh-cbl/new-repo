@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Registration and Capture - DualCam Ops{% endblock %}
+{% block sidebar %}Capture 5 images with stable lighting and a forward pose. Avoid motion blur.{% endblock %}
+{% block content %}
+<section class="panel p-6">
+  <div class="flex items-start justify-between gap-4"><div><p class="panel-kicker">New Registration</p><h1 class="mt-2 text-2xl font-semibold">Register a person</h1><p class="mt-2 text-sm text-secondary">Capture 5 shots to add this person to the training set.</p></div><span class="status-pill">Session Active</span></div>
+  {% if success %}<div class="mt-5 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success">Saved {{ submitted_name }} from {{ submitted_camera }}. Notes: {{ submitted_notes or '—' }}</div>{% endif %}
+  <div class="mt-6 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+    <form method="post" class="space-y-4">
+      <div><label class="form-label">Full Name</label><input name="full_name" required class="form-input" placeholder="Enter person label"></div>
+      <div><label class="form-label">Notes</label><textarea name="notes" class="form-input h-28" placeholder="Example: Visitor badge 12, blue jacket"></textarea></div>
+      <div class="grid gap-4 md:grid-cols-2"><div><label class="form-label">Camera</label><select name="camera" class="form-input"><option>Inbuilt Camera</option><option>External Webcam</option></select></div><div><label class="form-label">Lighting</label><select class="form-input"><option>Neutral</option><option>Low light</option><option>Bright</option></select></div></div>
+      <div class="flex items-center gap-3"><button type="button" class="btn-primary">Capture Shot</button><button type="submit" class="btn-secondary">Save Registration</button></div>
+    </form>
+    <div class="panel-soft p-4"><div class="flex items-center justify-between"><p class="panel-title">Capture Progress</p><span class="font-mono text-xs text-secondary">{{ store.capture_progress }} of {{ store.capture_target }}</span></div><div class="mt-4 grid grid-cols-5 gap-2">{% for i in range(1,6) %}<div class="thumb {% if i <= store.capture_progress %}thumb-done{% endif %}"></div>{% endfor %}</div><div class="mt-4 rounded-md border border-white/10 bg-neutral/80 p-3 text-xs text-secondary">Keep the face centered. Capture with neutral background when possible.</div><div class="mt-4 h-40 rounded-lg border border-white/10 bg-surface"></div></div>
+  </div>
+</section>
+<section class="panel p-6 mt-6"><h2 class="text-lg font-semibold">Validation Checklist</h2><div class="mt-4 grid gap-4 md:grid-cols-3 text-sm text-secondary"><div class="check-card">All 5 images captured</div><div class="check-card">No duplicate face angles</div><div class="check-card">Lighting consistency</div></div></section>
+{% endblock %}

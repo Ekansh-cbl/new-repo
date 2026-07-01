@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}DualCam Ops{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#E8EDF2', secondary: '#9AA7B1', tertiary: '#39D98A', neutral: '#0F1115', surface: '#151A20', error: '#E05454', warning: '#F0B429', success: '#39D98A' },
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], label: ['IBM Plex Sans', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+          borderRadius: { sm: '4px', md: '8px', lg: '12px', xl: '16px' }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="bg-neutral text-primary font-sans">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-surface focus:px-4 focus:py-2">Skip to content</a>
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-neutral/90 backdrop-blur">
+    <div class="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-md border border-tertiary/40 bg-tertiary/20"></div>
+        <a href="/" class="text-lg font-semibold tracking-tight">DualCam Ops</a>
+      </div>
+      <div class="hidden items-center gap-4 text-sm text-secondary md:flex">
+        <span class="font-mono">GPU: RTX 3060</span>
+        <span class="font-mono">FPS: 24.6</span>
+        <span class="rounded-full border border-tertiary/40 px-3 py-1 text-tertiary">Live</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/register" class="rounded-md border border-white/10 px-3 py-2 text-sm text-secondary hover:text-primary">Register</a>
+        <div class="h-9 w-9 rounded-full border border-white/10 bg-surface"></div>
+      </div>
+    </div>
+  </header>
+  <div class="mx-auto flex max-w-[1440px] gap-6 px-6 py-6">
+    <aside class="hidden w-56 flex-shrink-0 md:block" aria-label="Sidebar">
+      <nav class="space-y-2 text-sm font-label">
+        <a href="/" class="nav-link {% if active=='dashboard' %}nav-active{% endif %}">Dashboard</a>
+        <a href="/register" class="nav-link {% if active=='register' %}nav-active{% endif %}">Register</a>
+        <a href="/people" class="nav-link {% if active=='people' %}nav-active{% endif %}">People</a>
+        <a href="/training" class="nav-link {% if active=='training' %}nav-active{% endif %}">Training</a>
+      </nav>
+      <div class="mt-8 rounded-lg border border-white/10 bg-surface p-4 text-xs text-secondary">
+        {% block sidebar %}{% endblock %}
+      </div>
+    </aside>
+    <main id="main" class="flex-1 space-y-6">{% block content %}{% endblock %}</main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Monitoring Dashboard - DualCam Ops</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#E8EDF2",
+            secondary: "#9AA7B1",
+            tertiary: "#39D98A",
+            neutral: "#0F1115",
+            surface: "#151A20",
+            onsurface: "#E8EDF2",
+            error: "#E05454",
+            warning: "#F0B429",
+            success: "#39D98A"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            label: ["IBM Plex Sans", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          },
+          borderRadius: {
+            sm: "4px",
+            md: "8px",
+            lg: "12px",
+            xl: "16px"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-neutral text-primary font-sans">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-surface focus:px-4 focus:py-2">Skip to content</a>
+
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-neutral/90 backdrop-blur">
+    <div class="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-md bg-tertiary/20 border border-tertiary/40"></div>
+        <a href="index.html" class="text-lg font-semibold tracking-tight">DualCam Ops</a>
+      </div>
+      <div class="hidden items-center gap-4 text-sm text-secondary md:flex">
+        <span class="font-mono">GPU: RTX 3060</span>
+        <span class="font-mono">FPS: 24.6</span>
+        <span class="rounded-full border border-tertiary/40 px-3 py-1 text-tertiary">Live</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="rounded-md border border-white/10 px-3 py-2 text-sm text-secondary hover:text-primary">Alerts</button>
+        <div class="h-9 w-9 rounded-full bg-surface border border-white/10"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mx-auto flex max-w-[1440px] gap-6 px-6 py-6">
+    <aside class="hidden w-56 flex-shrink-0 md:block" aria-label="Sidebar">
+      <nav class="space-y-2 text-sm font-label">
+        <a href="index.html" class="flex items-center gap-3 rounded-lg border border-tertiary/40 bg-tertiary/10 px-3 py-2 text-tertiary">Dashboard</a>
+        <a href="register.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">Register</a>
+        <a href="people.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">People</a>
+        <a href="training.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">Training</a>
+      </nav>
+      <div class="mt-8 rounded-lg border border-white/10 bg-surface p-4">
+        <p class="text-xs uppercase tracking-[0.2em] text-secondary">System</p>
+        <div class="mt-3 space-y-2 text-xs text-secondary">
+          <div class="flex items-center justify-between"><span>Storage</span><span class="font-mono text-primary">68%</span></div>
+          <div class="flex items-center justify-between"><span>Temp</span><span class="font-mono text-primary">72C</span></div>
+          <div class="flex items-center justify-between"><span>Uptime</span><span class="font-mono text-primary">5h 42m</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main id="main" class="flex-1 space-y-6" data-sitemap="/" data-req="live-monitoring">
+      <section class="grid gap-4 md:grid-cols-4" data-req="status-metrics">
+        <div class="rounded-lg border border-white/10 bg-surface p-4">
+          <p class="text-xs uppercase tracking-[0.2em] text-secondary">Active Feeds</p>
+          <p class="mt-2 text-2xl font-semibold">2</p>
+          <p class="text-xs text-secondary">Inbuilt and external webcam</p>
+        </div>
+        <div class="rounded-lg border border-white/10 bg-surface p-4">
+          <p class="text-xs uppercase tracking-[0.2em] text-secondary">Detected IDs</p>
+          <p class="mt-2 text-2xl font-semibold">17</p>
+          <p class="text-xs text-secondary">12 registered, 5 anonymous</p>
+        </div>
+        <div class="rounded-lg border border-white/10 bg-surface p-4">
+          <p class="text-xs uppercase tracking-[0.2em] text-secondary">Model Version</p>
+          <p class="mt-2 text-2xl font-semibold">YOLOv8n-3.1</p>
+          <p class="text-xs text-secondary">Last trained 2 hours ago</p>
+        </div>
+        <div class="rounded-lg border border-white/10 bg-surface p-4">
+          <p class="text-xs uppercase tracking-[0.2em] text-secondary">Queue</p>
+          <p class="mt-2 text-2xl font-semibold">1</p>
+          <p class="text-xs text-secondary">New capture ready</p>
+        </div>
+      </section>
+
+      <section class="grid gap-6 lg:grid-cols-3" data-req="dual-camera-feeds">
+        <div class="lg:col-span-2 grid gap-6 md:grid-cols-2">
+          <div class="rounded-xl border border-white/10 bg-surface p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium">Inbuilt Camera</p>
+              <span class="rounded-full border border-success/40 px-2 py-0.5 text-xs text-success">Live</span>
+            </div>
+            <div class="mt-3 h-52 rounded-lg border border-white/10 bg-neutral/60"></div>
+            <div class="mt-3 flex items-center justify-between text-xs text-secondary">
+              <span class="font-mono">Feed 01</span>
+              <span class="font-mono">Latency 32ms</span>
+            </div>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-surface p-4">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium">External Webcam</p>
+              <span class="rounded-full border border-success/40 px-2 py-0.5 text-xs text-success">Live</span>
+            </div>
+            <div class="mt-3 h-52 rounded-lg border border-white/10 bg-neutral/60"></div>
+            <div class="mt-3 flex items-center justify-between text-xs text-secondary">
+              <span class="font-mono">Feed 02</span>
+              <span class="font-mono">Latency 28ms</span>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface p-4" data-req="quick-actions">
+          <p class="text-sm font-medium">Quick Actions</p>
+          <div class="mt-4 space-y-3">
+            <a href="register.html" class="flex items-center justify-between rounded-md bg-tertiary px-4 py-3 text-sm font-semibold text-neutral">Register New Person</a>
+            <button class="flex w-full items-center justify-between rounded-md border border-white/10 px-4 py-3 text-sm text-primary hover:bg-neutral/70">Start Capture Session</button>
+            <a href="training.html" class="flex items-center justify-between rounded-md border border-white/10 px-4 py-3 text-sm text-primary hover:bg-neutral/70">Run Training</a>
+            <a href="people.html" class="flex items-center justify-between rounded-md border border-white/10 px-4 py-3 text-sm text-primary hover:bg-neutral/70">Review Anonymous IDs</a>
+          </div>
+          <div class="mt-6 rounded-lg border border-white/10 bg-neutral/70 p-3 text-xs text-secondary">
+            Next training window in 12 minutes. Keep captures under 150MB.
+          </div>
+        </div>
+      </section>
+
+      <section class="grid gap-6 lg:grid-cols-3" data-req="detection-stream">
+        <div class="rounded-xl border border-white/10 bg-surface p-4 lg:col-span-2">
+          <div class="flex items-center justify-between">
+            <p class="text-sm font-medium">Detection Stream</p>
+            <button class="text-xs text-secondary">Filter</button>
+          </div>
+          <div class="mt-4 space-y-3">
+            <div class="flex items-center justify-between rounded-lg border border-white/10 bg-neutral/70 p-3 text-sm">
+              <div>
+                <p class="font-medium">ID 204 - Priya Sharma</p>
+                <p class="text-xs text-secondary">Inbuilt Camera - 2 minutes ago</p>
+              </div>
+              <span class="font-mono text-success">98.1%</span>
+            </div>
+            <div class="flex items-center justify-between rounded-lg border border-white/10 bg-neutral/70 p-3 text-sm">
+              <div>
+                <p class="font-medium">Anon 7F3A</p>
+                <p class="text-xs text-secondary">External Webcam - 6 minutes ago</p>
+              </div>
+              <span class="font-mono text-warning">71.6%</span>
+            </div>
+            <div class="flex items-center justify-between rounded-lg border border-white/10 bg-neutral/70 p-3 text-sm">
+              <div>
+                <p class="font-medium">ID 118 - Mateo Ruiz</p>
+                <p class="text-xs text-secondary">Inbuilt Camera - 12 minutes ago</p>
+              </div>
+              <span class="font-mono text-success">95.4%</span>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-surface p-4">
+          <p class="text-sm font-medium">System Health</p>
+          <div class="mt-4 space-y-3 text-sm text-secondary">
+            <div class="flex items-center justify-between">
+              <span>Camera Sync</span>
+              <span class="text-success">Stable</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>GPU Load</span>
+              <span class="font-mono text-primary">67%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>RAM Usage</span>
+              <span class="font-mono text-primary">11.2GB</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Storage</span>
+              <span class="font-mono text-primary">226GB free</span>
+            </div>
+          </div>
+          <div class="mt-5 rounded-lg border border-white/10 bg-neutral/70 p-3 text-xs text-secondary">
+            Alerts are clear. Next scheduled maintenance in 4 days.
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

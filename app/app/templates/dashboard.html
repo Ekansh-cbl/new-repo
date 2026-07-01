@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Live Monitoring Dashboard - DualCam Ops{% endblock %}
+{% block sidebar %}System status, feeds, detections, and quick actions are centralized here.{% endblock %}
+{% block content %}
+<section class="grid gap-4 md:grid-cols-4">
+  <div class="stat-card"><p class="stat-label">Active Feeds</p><p class="stat-value">{{ store.active_feeds }}</p><p class="stat-note">Inbuilt and external webcam</p></div>
+  <div class="stat-card"><p class="stat-label">Detected IDs</p><p class="stat-value">{{ store.detected_ids }}</p><p class="stat-note">Registered and anonymous</p></div>
+  <div class="stat-card"><p class="stat-label">Model Version</p><p class="stat-value">{{ store.model_version }}</p><p class="stat-note">Last trained 2 hours ago</p></div>
+  <div class="stat-card"><p class="stat-label">Queue</p><p class="stat-value">{{ store.queue_size }}</p><p class="stat-note">New capture ready</p></div>
+</section>
+<section class="grid gap-6 lg:grid-cols-3">
+  <div class="lg:col-span-2 grid gap-6 md:grid-cols-2">
+    <div class="panel"><div class="panel-head"><p class="panel-title">Inbuilt Camera</p><span class="status-pill">Live</span></div><div class="feed-box"></div><div class="panel-foot"><span class="font-mono">Feed 01</span><span class="font-mono">Latency 32ms</span></div></div>
+    <div class="panel"><div class="panel-head"><p class="panel-title">External Webcam</p><span class="status-pill">Live</span></div><div class="feed-box"></div><div class="panel-foot"><span class="font-mono">Feed 02</span><span class="font-mono">Latency 28ms</span></div></div>
+  </div>
+  <div class="panel">
+    <p class="panel-title">Quick Actions</p>
+    <div class="mt-4 space-y-3">
+      <a href="/register" class="btn-primary block text-center">Register New Person</a>
+      <button class="btn-secondary w-full">Start Capture Session</button>
+      <a href="/training" class="btn-secondary block text-center">Run Training</a>
+      <a href="/people" class="btn-secondary block text-center">Review Anonymous IDs</a>
+    </div>
+    <div class="mt-6 rounded-lg border border-white/10 bg-neutral/70 p-3 text-xs text-secondary">Next training window in 12 minutes. Keep captures under 150MB.</div>
+  </div>
+</section>
+<section class="grid gap-6 lg:grid-cols-3">
+  <div class="panel lg:col-span-2"><div class="panel-head"><p class="panel-title">Detection Stream</p><button class="text-xs text-secondary">Filter</button></div><div class="mt-4 space-y-3">{% for d in store.detections %}<div class="row-card"><div><p class="font-medium">{{ d.label }}</p><p class="text-xs text-secondary">{{ d.feed }} - {{ d.seen_at }}</p></div><span class="font-mono {% if d.status=='anonymous' %}text-warning{% else %}text-success{% endif %}">{{ '%.1f'|format(d.confidence) }}%</span></div>{% endfor %}</div></div>
+  <div class="panel"><p class="panel-title">System Health</p><div class="mt-4 space-y-3 text-sm text-secondary"><div class="flex items-center justify-between"><span>Camera Sync</span><span class="text-success">Stable</span></div><div class="flex items-center justify-between"><span>GPU Load</span><span class="font-mono text-primary">67%</span></div><div class="flex items-center justify-between"><span>RAM Usage</span><span class="font-mono text-primary">11.2GB</span></div><div class="flex items-center justify-between"><span>Storage</span><span class="font-mono text-primary">226GB free</span></div></div></div>
+</section>
+{% endblock %}

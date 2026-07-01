@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>People and Identity - DualCam Ops</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#E8EDF2",
+            secondary: "#9AA7B1",
+            tertiary: "#39D98A",
+            neutral: "#0F1115",
+            surface: "#151A20",
+            onsurface: "#E8EDF2",
+            error: "#E05454",
+            warning: "#F0B429",
+            success: "#39D98A"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "sans-serif"],
+            label: ["IBM Plex Sans", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          },
+          borderRadius: {
+            sm: "4px",
+            md: "8px",
+            lg: "12px",
+            xl: "16px"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-neutral text-primary font-sans">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-surface focus:px-4 focus:py-2">Skip to content</a>
+
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-neutral/90 backdrop-blur">
+    <div class="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-md bg-tertiary/20 border border-tertiary/40"></div>
+        <a href="index.html" class="text-lg font-semibold tracking-tight">DualCam Ops</a>
+      </div>
+      <div class="hidden items-center gap-4 text-sm text-secondary md:flex">
+        <span class="font-mono">People Index</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="rounded-md border border-white/10 px-3 py-2 text-sm text-secondary hover:text-primary">Export</button>
+        <div class="h-9 w-9 rounded-full bg-surface border border-white/10"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mx-auto flex max-w-[1440px] gap-6 px-6 py-6">
+    <aside class="hidden w-56 flex-shrink-0 md:block" aria-label="Sidebar">
+      <nav class="space-y-2 text-sm font-label">
+        <a href="index.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">Dashboard</a>
+        <a href="register.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">Register</a>
+        <a href="people.html" class="flex items-center gap-3 rounded-lg border border-tertiary/40 bg-tertiary/10 px-3 py-2 text-tertiary">People</a>
+        <a href="training.html" class="flex items-center gap-3 rounded-lg px-3 py-2 text-secondary hover:bg-surface">Training</a>
+      </nav>
+      <div class="mt-8 rounded-lg border border-white/10 bg-surface p-4 text-xs text-secondary">
+        Anonymous IDs persist across both camera feeds for consistent tracking.
+      </div>
+    </aside>
+
+    <main id="main" class="flex-1 space-y-6" data-sitemap="/people" data-req="identity-management">
+      <section class="rounded-xl border border-white/10 bg-surface p-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-secondary">People</p>
+            <h1 class="mt-2 text-2xl font-semibold">Registered identities</h1>
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="text" placeholder="Search by name or ID" class="w-56 rounded-md border border-white/10 bg-neutral/80 px-4 py-2 text-sm text-primary placeholder:text-secondary focus:border-tertiary focus:outline-none" />
+            <button class="rounded-md bg-tertiary px-4 py-2 text-sm font-semibold text-neutral">Add Person</button>
+          </div>
+        </div>
+        <div class="mt-6 overflow-hidden rounded-lg border border-white/10">
+          <table class="w-full text-sm">
+            <thead class="bg-neutral/80 text-secondary">
+              <tr>
+                <th class="px-4 py-3 text-left">Name</th>
+                <th class="px-4 py-3 text-left">ID</th>
+                <th class="px-4 py-3 text-left">Last Seen</th>
+                <th class="px-4 py-3 text-left">Confidence</th>
+                <th class="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/10">
+              <tr class="bg-surface">
+                <td class="px-4 py-3">Priya Sharma</td>
+                <td class="px-4 py-3 font-mono text-secondary">ID 204</td>
+                <td class="px-4 py-3 text-secondary">2 minutes ago</td>
+                <td class="px-4 py-3 font-mono text-success">98.1%</td>
+                <td class="px-4 py-3 text-right text-secondary">View</td>
+              </tr>
+              <tr class="bg-surface">
+                <td class="px-4 py-3">Mateo Ruiz</td>
+                <td class="px-4 py-3 font-mono text-secondary">ID 118</td>
+                <td class="px-4 py-3 text-secondary">12 minutes ago</td>
+                <td class="px-4 py-3 font-mono text-success">95.4%</td>
+                <td class="px-4 py-3 text-right text-secondary">View</td>
+              </tr>
+              <tr class="bg-surface">
+                <td class="px-4 py-3">Aisha Johnson</td>
+                <td class="px-4 py-3 font-mono text-secondary">ID 061</td>
+                <td class="px-4 py-3 text-secondary">36 minutes ago</td>
+                <td class="px-4 py-3 font-mono text-success">93.8%</td>
+                <td class="px-4 py-3 text-right text-secondary">View</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="rounded-xl border border-white/10 bg-surface p-6" data-req="anonymous-ids">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold">Anonymous IDs</h2>
+            <p class="text-sm text-secondary">IDs detected without registration. Promote or merge as needed.</p>
+          </div>
+          <button class="rounded-md border border-white/10 px-4 py-2 text-sm text-primary hover:bg-neutral/70">Merge Selected</button>
+        </div>
+        <div class="mt-5 grid gap-4 md:grid-cols-3">
+          <div class="rounded-lg border border-white/10 bg-neutral/70 p-4">
+            <p class="font-mono text-xs text-secondary">Anon 7F3A</p>
+            <p class="mt-2 text-sm">Last seen 6 minutes ago on External Webcam</p>
+            <button class="mt-4 w-full rounded-md bg-tertiary px-3 py-2 text-xs font-semibold text-neutral">Promote to Registered</button>
+          </div>
+          <div class="rounded-lg border border-white/10 bg-neutral/70 p-4">
+            <p class="font-mono text-xs text-secondary">Anon 91C2</p>
+            <p class="mt-2 text-sm">Last seen 18 minutes ago on Inbuilt Camera</p>
+            <button class="mt-4 w-full rounded-md border border-white/10 px-3 py-2 text-xs text-primary hover:bg-neutral/80">Link to Existing</button>
+          </div>
+          <div class="rounded-lg border border-white/10 bg-neutral/70 p-4">
+            <p class="font-mono text-xs text-secondary">Anon 55B9</p>
+            <p class="mt-2 text-sm">Last seen 1 hour ago on External Webcam</p>
+            <button class="mt-4 w-full rounded-md border border-white/10 px-3 py-2 text-xs text-primary hover:bg-neutral/80">Review Trail</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
