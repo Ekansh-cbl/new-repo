@@ -4,6 +4,7 @@
 {% block content %}
 <section class="panel p-6">
   <div class="flex items-start justify-between gap-4"><div><p class="panel-kicker">New Registration</p><h1 class="mt-2 text-2xl font-semibold">Register a person</h1><p class="mt-2 text-sm text-secondary">Capture 5 shots to add this person to the training set.</p></div><span class="status-pill">Session Active</span></div>
+  {% if store.capture_session_active %}<div class="mt-5 rounded-lg border border-tertiary/40 bg-tertiary/10 p-3 text-sm text-tertiary">{{ store.capture_session_message }}</div>{% endif %}
   {% if success %}<div class="mt-5 rounded-lg border border-success/40 bg-success/10 p-3 text-sm text-success">Saved {{ submitted_name }} from {{ submitted_camera }}. Notes: {{ submitted_notes or '—' }}</div>{% endif %}
   <div class="mt-6 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
     <form method="post" action="/register" class="space-y-4">

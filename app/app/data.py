@@ -55,6 +55,8 @@ class AppState:
     queue_size: int
     capture_progress: int
     capture_target: int
+    capture_session_active: bool
+    capture_session_message: str
     detections: List[DetectionEvent] = field(default_factory=list)
     people: List[PersonRecord] = field(default_factory=list)
     anonymous: List[AnonymousTrack] = field(default_factory=list)
@@ -70,6 +72,8 @@ class AppState:
             queue_size=1,
             capture_progress=3,
             capture_target=5,
+            capture_session_active=False,
+            capture_session_message="Ready to start capture session.",
             detections=[
                 DetectionEvent("Priya Sharma", "Inbuilt Camera", 98.1, cls._ago(now, 2), "registered"),
                 DetectionEvent("Anon 7F3A", "External Webcam", 71.6, cls._ago(now, 6), "anonymous"),

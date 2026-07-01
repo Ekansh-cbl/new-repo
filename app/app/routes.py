@@ -11,12 +11,12 @@ def render(request: Request, template_name: str, **context):
 
 @router.get("/", response_class=HTMLResponse)
 def dashboard(request: Request):
-    return render(request, "dashboard.html", store=request.app.state.store)
+    return render(request, "dashboard.html", store=request.app.state.store, active="dashboard")
 
 
 @router.get("/register", response_class=HTMLResponse)
 def register(request: Request):
-    return render(request, "register.html", store=request.app.state.store, success=False)
+    return render(request, "register.html", store=request.app.state.store, success=False, active="register")
 
 
 @router.post("/register")
@@ -36,24 +36,27 @@ def submit_registration(
         submitted_name=full_name,
         submitted_camera=camera,
         submitted_notes=notes,
+        active="register",
     )
 
 
 @router.post("/capture")
 def capture_shot(request: Request):
     store = request.app.state.store
+    store.capture_session_active = True
+    store.capture_session_message = "Capture session started. Ready for shot 1."
     store.capture_progress = min(store.capture_target, store.capture_progress + 1)
     return RedirectResponse(url="/register", status_code=303)
 
 
 @router.get("/people", response_class=HTMLResponse)
 def people(request: Request):
-    return render(request, "people.html", store=request.app.state.store)
+    return render(request, "people.html", store=request.app.state.store, active="people")
 
 
 @router.get("/training", response_class=HTMLResponse)
 def training(request: Request):
-    return render(request, "training.html", store=request.app.state.store)
+    return render(request, "training.html", store=request.app.state.store, active="training")
 
 
 @router.get("/health")
