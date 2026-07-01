@@ -1,0 +1,1 @@
+Preview expects /app at runtime; keep app code mirrored under repo root for preview tooling.
