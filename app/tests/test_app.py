@@ -1,6 +1,24 @@
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.core import create_app
+
+
+def test_create_app_works_from_any_cwd(tmp_path):
+    cwd = Path.cwd()
+    try:
+        # The preview sandbox starts the app from a nested directory, so the
+        # app must not depend on the current working directory for templates.
+        import os
+
+        os.chdir(tmp_path)
+        client = TestClient(create_app())
+        response = client.get("/")
+        assert response.status_code == 200
+        assert "DualCam Ops" in response.text
+    finally:
+        os.chdir(cwd)
 
 
 client = TestClient(create_app())
